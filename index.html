@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Tin — Sub Branding Work</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0a0a0a;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      padding: 4rem 2rem;
+    }
+    .header {
+      max-width: 900px;
+      margin: 0 auto 4rem;
+      text-align: center;
+    }
+    .logo {
+      font-size: 3rem;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      text-shadow: 0 0 10px rgba(255,255,255,0.9), 0 0 30px rgba(255,255,255,0.5), 0 0 60px rgba(255,255,255,0.2);
+      margin-bottom: 0.25rem;
+    }
+    .sub { font-size: 0.9rem; color: #888; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.75rem; }
+    .bar { display: flex; gap: 0; justify-content: center; margin-bottom: 1.5rem; }
+    .bar span { display: block; height: 5px; width: 48px; }
+    h2 { font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; color: #333; margin-bottom: 1.5rem; }
+
+    /* Design options */
+    .section { max-width: 900px; margin: 0 auto 5rem; }
+    .options { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+    .option {
+      display: block;
+      text-decoration: none;
+      border: 1px solid #1a1a1a;
+      background: #111;
+      padding: 2rem;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .option:hover { border-color: #444; background: #161616; }
+    .option-num { font-size: 0.7rem; letter-spacing: 0.2em; color: #444; text-transform: uppercase; margin-bottom: 0.75rem; }
+    .option-title { font-size: 1.2rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
+    .option-desc { font-size: 0.85rem; color: #666; line-height: 1.5; }
+    .option-preview {
+      margin-top: 1.25rem;
+      height: 80px;
+      border: 1px solid #1a1a1a;
+      overflow: hidden;
+      position: relative;
+    }
+    .preview-tabs { display: flex; gap: 2px; padding: 8px 8px 0; background: #1a1a1a; }
+    .preview-tab { height: 20px; flex: 1; border-radius: 2px 2px 0 0; }
+    .preview-content { height: 52px; background: #0d0d0d; }
+    .preview-masthead { height: 35px; background: #000; display: flex; align-items: center; justify-content: center; }
+    .preview-masthead-text { color: #fff; font-size: 9px; font-weight: 900; letter-spacing: 0.1em; text-shadow: 0 0 6px #fff; }
+    .preview-stripe { display: flex; height: 10px; }
+    .preview-stripe div { flex: 1; }
+    .preview-top { height: 28px; background: #000; display: flex; align-items: center; padding: 0 8px; gap: 6px; }
+    .preview-pill { height: 12px; border-radius: 2px; width: 32px; }
+    .preview-hero { height: 52px; background: linear-gradient(135deg, #111, #1a1a1a); }
+
+    /* Divider */
+    .divider {
+      max-width: 900px;
+      margin: 0 auto 3rem;
+      border: none;
+      border-top: 1px solid #1a1a1a;
+    }
+
+    /* Service design section */
+    .service-design { max-width: 900px; margin: 0 auto; }
+    .sd-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1px; background: #111; }
+    .sd-card {
+      background: #0a0a0a;
+      border: 1px solid #1a1a1a;
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      min-height: 160px;
+    }
+    .sd-card-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: #333; }
+    .sd-card-title { font-size: 1rem; font-weight: 700; color: #555; }
+    .sd-card-placeholder {
+      margin-top: auto;
+      font-size: 0.72rem;
+      color: #2a2a2a;
+      border: 1px dashed #222;
+      padding: 0.5rem 0.75rem;
+      letter-spacing: 0.05em;
+    }
+    .sd-card.has-content .sd-card-title { color: #fff; }
+    .sd-card.has-content .sd-card-desc { font-size: 0.8rem; color: #555; line-height: 1.5; margin-top: 0.25rem; }
+
+    /* Diagram section */
+    .diagrams { max-width: 900px; margin: 5rem auto 0; }
+    .diagram-intro { font-size: 0.85rem; color: #555; line-height: 1.7; margin-bottom: 2.5rem; }
+    .diagram-block { margin-bottom: 3rem; }
+    .diagram-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: #333; margin-bottom: 0.4rem; }
+    .diagram-title { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 0.4rem; }
+    .diagram-desc { font-size: 0.82rem; color: #555; line-height: 1.6; margin-bottom: 1rem; }
+    .diagram-render {
+      border: 1px solid #1a1a1a;
+      background: #0d0d0d;
+      padding: 1.5rem;
+      overflow-x: auto;
+    }
+    .diagram-render .mermaid { display: flex; justify-content: center; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">The Tin</div>
+    <div class="sub">Music and Arts</div>
+    <div class="bar">
+      <span style="background:#d85b61"></span>
+      <span style="background:#edc656"></span>
+      <span style="background:#0b8793"></span>
+    </div>
+  </div>
+
+  <div style="max-width:900px; margin:0 auto 3rem; padding:1rem 1.25rem; border:1px solid #1a1a1a; background:#0d0d0d;">
+    <p style="font-size:0.8rem; color:#555; line-height:1.7;">The Tin logo (not really a logo, but what I did in the summer) 
+      has been taken and given a subtle glow effect, 
+      referencing the outdoor illuminated sign. The font isn't the same as the actual sign, or brand.
+      It's white on black throughout so it doesn't clash with any of the sub brand colour schemes.
+      I also used the old websites (deliaphonic etc) that I could find old archives of, so I'm guessing a lot, 
+      but here is three ways of presenting the 'sub brands'. None of this has been optimised for mobile, which would be
+      the main audience, but I can explain options for that. The example sub sites were generated by AI, so are full of garbage
+    </p>
+  </div>
+
+  <div class="section">
+    <h2>Design Options</h2>
+    <div class="options">
+      <a class="option" href="option1.html">
+        <div class="option-num">Option 01</div>
+        <div class="option-title">The Filing Cabinet</div>
+        <div class="option-desc">Classic folder tabs. Each brand sits as a raised tab beside the logo. Clean, structured, familiar.</div>
+        <div class="option-preview">
+          <div class="preview-tabs">
+            <div class="preview-tab" style="background:#fff; width:60px; flex:none;"></div>
+            <div class="preview-tab" style="background:#a855f7; opacity:0.5;"></div>
+            <div class="preview-tab" style="background:#d4a017; opacity:0.5;"></div>
+            <div class="preview-tab" style="background:#ef4444; opacity:0.5;"></div>
+          </div>
+          <div class="preview-content"></div>
+        </div>
+      </a>
+      <a class="option" href="option2.html">
+        <div class="option-num">Option 02</div>
+        <div class="option-title">The Masthead</div>
+        <div class="option-desc">Large glowing masthead, editorial feel. Sub brands appear as coloured bands beneath the main header.</div>
+        <div class="option-preview">
+          <div class="preview-masthead"><span class="preview-masthead-text">THE TIN</span></div>
+          <div class="preview-stripe">
+            <div style="background:#fff;"></div>
+            <div style="background:#a855f7;"></div>
+            <div style="background:#d4a017;"></div>
+            <div style="background:#ef4444;"></div>
+          </div>
+          <div class="preview-content" style="height:35px;"></div>
+        </div>
+      </a>
+      <a class="option" href="option3.html">
+        <div class="option-num">Option 03</div>
+        <div class="option-title">The Signal</div>
+        <div class="option-desc">Sleek, modern. The Tin mark stays top-left. Brands switch via pill navigation. Accent line shifts with each brand.</div>
+        <div class="option-preview">
+          <div class="preview-top">
+            <div class="preview-pill" style="background:#fff;"></div>
+            <div class="preview-pill" style="background:#333;"></div>
+            <div class="preview-pill" style="background:#333;"></div>
+            <div class="preview-pill" style="background:#333;"></div>
+          </div>
+          <div class="preview-hero"></div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <div class="service-design">
+    <h2>Service Design Documents</h2>
+    <div class="sd-grid">
+      <div class="sd-card">
+        <div class="sd-card-label">Personas</div>
+        <div class="sd-card-title">User Personas</div>
+        <div class="sd-card-placeholder">Placeholder — add personas here</div>
+      </div>
+      <div class="sd-card">
+        <div class="sd-card-label">User Research</div>
+        <div class="sd-card-title">Research Findings</div>
+        <div class="sd-card-placeholder">Placeholder — add research here</div>
+      </div>
+      <div class="sd-card">
+        <div class="sd-card-label">Journeys</div>
+        <div class="sd-card-title">User Journey Maps</div>
+        <div class="sd-card-placeholder">Placeholder — add journey maps here</div>
+      </div>
+      <div class="sd-card">
+        <div class="sd-card-label">Architecture</div>
+        <div class="sd-card-title">Information Architecture</div>
+        <div class="sd-card-placeholder">Placeholder — add IA here</div>
+      </div>
+      <div class="sd-card">
+        <div class="sd-card-label">Content</div>
+        <div class="sd-card-title">Content Strategy</div>
+        <div class="sd-card-placeholder">Placeholder — add content strategy here</div>
+      </div>
+      <div class="sd-card">
+        <div class="sd-card-label">Brand</div>
+        <div class="sd-card-title">Brand Guidelines</div>
+        <div class="sd-card-placeholder">Placeholder — add guidelines here</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider" style="margin-top:5rem;" />
+
+  <div class="diagrams">
+    <h2>Diagram Types</h2>
+    <p class="diagram-intro">Mermaid is a plain-text diagramming tool. You write the diagram as code and it renders in the browser. Good for keeping diagrams next to the work rather than buried in a Figma file nobody opens. Here are the five types most useful for this project.</p>
+
+    <div class="diagram-block">
+      <div class="diagram-label">Type 01</div>
+      <div class="diagram-title">Flowchart</div>
+      <div class="diagram-desc">Maps out how things connect. Use it for site navigation, decision trees, anything with branches. This one shows the rough structure of The Tin's sub-brands.</div>
+      <div class="diagram-render">
+        <div class="mermaid">
+%%{init: {'theme': 'dark', 'themeVariables': {'primaryColor': '#1a1a1a', 'primaryTextColor': '#fff', 'primaryBorderColor': '#333', 'lineColor': '#444', 'background': '#0d0d0d', 'mainBkg': '#111'}}}%%
+flowchart TD
+    TIN["The Tin"] --> MUSIC["Music"]
+    TIN --> ARTS["Arts"]
+    TIN --> EVENTS["Events"]
+    MUSIC --> DELIA["Deliaphonic"]
+    MUSIC --> GIGS["Live Gigs"]
+    ARTS --> GALLERY["Gallery"]
+    ARTS --> WORKSHOPS["Workshops"]
+    EVENTS --> TICKETS["Ticketing"]
+    EVENTS --> SERIES["Series &amp; One-offs"]
+        </div>
+      </div>
+    </div>
+
+    <div class="diagram-block">
+      <div class="diagram-label">Type 02</div>
+      <div class="diagram-title">User Journey</div>
+      <div class="diagram-desc">Tracks what a person actually does, step by step. Useful for spotting where things fall apart. The numbers are a rough satisfaction score, not gospel.</div>
+      <div class="diagram-render">
+        <div class="mermaid">
+%%{init: {'theme': 'dark', 'themeVariables': {'primaryColor': '#1a1a1a', 'primaryTextColor': '#fff', 'lineColor': '#444', 'background': '#0d0d0d'}}}%%
+journey
+    title Finding a gig at The Tin
+    section Discovery
+      Sees a post on Instagram: 3: Fan
+      Clicks through to the site: 4: Fan
+    section Browsing
+      Looks at upcoming events: 4: Fan
+      Reads about the venue: 3: Fan
+    section Booking
+      Picks a date: 5: Fan
+      Buys a ticket: 4: Fan
+    section On the night
+      Turns up: 5: Fan
+      Has a brilliant time: 5: Fan
+        </div>
+      </div>
+    </div>
+
+    <div class="diagram-block">
+      <div class="diagram-label">Type 03</div>
+      <div class="diagram-title">Sequence Diagram</div>
+      <div class="diagram-desc">Shows what talks to what and in what order. Good for booking flows, APIs, anything with back-and-forth between systems or people.</div>
+      <div class="diagram-render">
+        <div class="mermaid">
+%%{init: {'theme': 'dark', 'themeVariables': {'primaryColor': '#1a1a1a', 'primaryTextColor': '#fff', 'lineColor': '#444', 'background': '#0d0d0d', 'activationBorderColor': '#555'}}}%%
+sequenceDiagram
+    participant Fan
+    participant Site
+    participant Ticketing
+    Fan->>Site: Browses events
+    Site-->>Fan: Shows listings
+    Fan->>Site: Selects an event
+    Site->>Ticketing: Checks availability
+    Ticketing-->>Site: Tickets available
+    Site-->>Fan: Shows booking form
+    Fan->>Ticketing: Pays
+    Ticketing-->>Fan: Sends confirmation
+        </div>
+      </div>
+    </div>
+
+    <div class="diagram-block">
+      <div class="diagram-label">Type 04</div>
+      <div class="diagram-title">Mind Map</div>
+      <div class="diagram-desc">A looser way to show how ideas relate. Less rigid than a flowchart. Good for early thinking, brand relationships, content planning before things are settled.</div>
+      <div class="diagram-render">
+        <div class="mermaid">
+%%{init: {'theme': 'dark', 'themeVariables': {'primaryColor': '#1a1a1a', 'primaryTextColor': '#fff', 'lineColor': '#444', 'background': '#0d0d0d'}}}%%
+mindmap
+  root((The Tin))
+    Music
+      Deliaphonic
+      Live gigs
+      Residencies
+    Arts
+      Exhibitions
+      Workshops
+      Open studios
+    Events
+      One-offs
+      Series
+      Collaborations
+    Community
+      Mailing list
+      Members
+        </div>
+      </div>
+    </div>
+
+    <div class="diagram-block">
+      <div class="diagram-label">Type 05</div>
+      <div class="diagram-title">Pie Chart</div>
+      <div class="diagram-desc">Useful when you need to show proportion without fighting with a spreadsheet. This is a placeholder split, not real data.</div>
+      <div class="diagram-render">
+        <div class="mermaid">
+%%{init: {'theme': 'dark', 'themeVariables': {'primaryColor': '#1a1a1a', 'primaryTextColor': '#fff', 'lineColor': '#444', 'background': '#0d0d0d', 'pie1': '#d85b61', 'pie2': '#edc656', 'pie3': '#0b8793', 'pie4': '#555'}}}%%
+pie title How people find The Tin
+    "Local regulars" : 40
+    "Social media discovery" : 30
+    "Word of mouth" : 20
+    "Other" : 10
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script>mermaid.initialize({ startOnLoad: true, theme: 'dark' });</script>
+</body>
+</html>

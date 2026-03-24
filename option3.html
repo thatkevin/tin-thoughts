@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Tin - Option 3: The Signal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --tin-r: #d85b61;
+      --tin-y: #edc656;
+      --tin-t: #0b8793;
+      --delia-cyan: #00d4e8;
+      --delia-red: #e8002a;
+      --delia: #00d4e8;
+      --boudica: #c9a84c;
+      --los: #f97316;
+      --brand-color: #fff;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #000;
+      color: #fff;
+      transition: --brand-color 0.4s;
+    }
+
+    /* ── TOP NAV ── */
+    .topnav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #000;
+      border-bottom: 1px solid #111;
+      display: flex;
+      align-items: center;
+      height: 52px;
+      padding: 0 1.5rem;
+      gap: 1.5rem;
+    }
+
+    .tin-mark {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+    .tin-mark-text {
+      font-size: 1rem;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      color: #fff;
+      text-shadow: 0 0 8px rgba(255,255,255,0.9), 0 0 20px rgba(255,255,255,0.5), 0 0 40px rgba(255,255,255,0.2);
+    }
+    .tin-mark-sub { font-size: 0.6rem; color: #444; letter-spacing: 0.1em; text-transform: uppercase; }
+    .tin-mark-bar { display: flex; height: 3px; gap: 1px; }
+    .tin-mark-bar span { width: 10px; }
+
+    .nav-divider { width: 1px; height: 20px; background: #1e1e1e; flex-shrink: 0; }
+
+    .brand-pills {
+      display: flex;
+      gap: 4px;
+      flex: 1;
+    }
+
+    .brand-pill {
+      padding: 0.35rem 0.9rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, opacity 0.2s;
+      user-select: none;
+      border: 1px solid transparent;
+    }
+
+    .brand-pill[data-brand="tin"] { color: #fff; }
+    .brand-pill[data-brand="tin"].active { background: #fff; color: #000; }
+    .brand-pill[data-brand="tin"].inactive { color: #555; border-color: #1e1e1e; }
+    .brand-pill[data-brand="tin"].inactive:hover { color: #aaa; border-color: #333; }
+
+    .brand-pill[data-brand="delia"].active { background: var(--delia); color: #000; }
+    .brand-pill[data-brand="delia"].inactive { color: var(--delia); border-color: rgba(0,212,232,0.2); opacity: 0.6; }
+    .brand-pill[data-brand="delia"].inactive:hover { opacity: 1; }
+
+    .brand-pill[data-brand="boudica"].active { background: var(--boudica); color: #000; }
+    .brand-pill[data-brand="boudica"].inactive { color: var(--boudica); border-color: rgba(201,168,76,0.2); opacity: 0.6; }
+    .brand-pill[data-brand="boudica"].inactive:hover { opacity: 1; }
+
+    .brand-pill[data-brand="los"].active { background: var(--los); color: #000; }
+    .brand-pill[data-brand="los"].inactive { color: var(--los); border-color: rgba(249,115,22,0.2); opacity: 0.6; }
+    .brand-pill[data-brand="los"].inactive:hover { opacity: 1; }
+
+    .nav-end { display: flex; gap: 1.2rem; margin-left: auto; }
+    .nav-end a { font-size: 0.72rem; color: #444; text-decoration: none; transition: color 0.2s; }
+    .nav-end a:hover { color: #fff; }
+
+    /* ── ACCENT LINE ── */
+    .accent-line { height: 2px; transition: background 0.4s; }
+    .accent-tin { background: #fff; }
+    .accent-delia { background: var(--delia); }
+    .accent-boudica { background: var(--boudica); }
+    .accent-los { background: var(--los); }
+
+    /* ── PANELS ── */
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* ── TIN PANEL ── */
+    #panel-tin { background: #000; }
+
+    .tin-hero-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 88vh;
+    }
+    @media (max-width: 700px) { .tin-hero-split { grid-template-columns: 1fr; min-height: auto; } }
+
+    .tin-hero-left {
+      padding: 4rem 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-right: 1px solid #111;
+    }
+
+    .featured-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: #333; margin-bottom: 2rem; }
+
+    .featured-event { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+    .feat-date { font-size: 0.75rem; color: #555; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.75rem; }
+    .feat-by { font-size: 0.85rem; color: #666; margin-bottom: 0.25rem; }
+    .feat-title {
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      margin-bottom: 0.75rem;
+      color: #fff;
+    }
+    .feat-quote { font-size: 0.85rem; color: #555; font-style: italic; margin-bottom: 2rem; line-height: 1.6; }
+
+    .feat-actions { display: flex; gap: 0.75rem; align-items: center; }
+    .btn-white { display: inline-block; padding: 0.65rem 1.4rem; background: #fff; color: #000; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; }
+    .btn-ghost { display: inline-block; padding: 0.65rem 1.4rem; border: 1px solid #333; color: #666; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; transition: border-color 0.2s, color 0.2s; }
+    .btn-ghost:hover { border-color: #fff; color: #fff; }
+
+    .tin-hero-right { position: relative; overflow: hidden; }
+    .tin-hero-right img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .tin-hero-right::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0,0,0,0.3), transparent);
+    }
+
+    .tin-next-events {
+      border-top: 1px solid #111;
+      padding: 0 2rem;
+    }
+    .next-header { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 0; border-bottom: 1px solid #0d0d0d; }
+    .next-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: #333; }
+    .next-more { font-size: 0.72rem; color: #444; text-decoration: none; transition: color 0.2s; }
+    .next-more:hover { color: #fff; }
+
+    .next-events-list { display: flex; flex-direction: column; }
+    .next-event {
+      display: grid;
+      grid-template-columns: 80px 1fr 80px 80px;
+      gap: 1.5rem;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid #0d0d0d;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .next-event:hover { background: #060606; padding-left: 0.25rem; }
+    .ne-date { font-size: 0.72rem; color: #444; letter-spacing: 0.05em; }
+    .ne-name { font-size: 0.9rem; font-weight: 600; color: #ccc; }
+    .ne-venue { font-size: 0.72rem; color: #444; }
+    .ne-price { font-size: 0.8rem; color: #666; text-align: right; }
+
+    .tin-grid-section { padding: 3rem 2rem; border-top: 1px solid #111; }
+    .tgs-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.5rem; }
+    .tgs-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: #333; }
+    .tgs-more { font-size: 0.72rem; color: #444; text-decoration: none; }
+    .tgs-more:hover { color: #fff; }
+    .event-masonry { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1px; background: #0d0d0d; }
+    .em-item { background: #000; cursor: pointer; }
+    .em-item img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; transition: opacity 0.2s; filter: grayscale(20%); }
+    .em-item:hover img { opacity: 0.8; }
+    .em-info { padding: 0.6rem 0.75rem; }
+    .em-name { font-size: 0.82rem; font-weight: 600; color: #ccc; margin-bottom: 0.2rem; }
+    .em-price { font-size: 0.72rem; color: #444; }
+
+    /* ── DELIA PANEL ── */
+    #panel-delia { background: #000; }
+
+    .delia-hero {
+      display: grid;
+      grid-template-columns: 55% 45%;
+      min-height: 85vh;
+    }
+    @media (max-width: 700px) { .delia-hero { grid-template-columns: 1fr; } }
+
+    .delia-left {
+      padding: 4rem 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .delia-tag { font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(0,212,232,0.5); margin-bottom: 2rem; }
+    .delia-big {
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 0.95;
+      color: #fff;
+      margin-bottom: 1.25rem;
+    }
+    .delia-big .cyan { color: var(--delia-cyan); }
+    .delia-big .red { color: var(--delia-red); }
+    .delia-intro { font-size: 0.95rem; color: rgba(0,212,232,0.6); line-height: 1.75; max-width: 440px; margin-bottom: 0.75rem; }
+    .delia-detail { font-size: 0.85rem; color: rgba(255,255,255,0.4); line-height: 1.7; max-width: 440px; margin-bottom: 2rem; }
+    .btn-delia { display: inline-block; padding: 0.65rem 1.4rem; background: var(--delia-cyan); color: #000; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; }
+
+    .delia-right {
+      position: relative;
+      overflow: hidden;
+      border-left: 1px solid rgba(0,212,232,0.08);
+    }
+    .delia-right img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(100%) brightness(0.2);
+    }
+    .delia-right-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(0deg, rgba(0,212,232,0.03) 0px, rgba(0,212,232,0.03) 1px, transparent 1px, transparent 50px),
+        repeating-linear-gradient(90deg, rgba(0,212,232,0.03) 0px, rgba(0,212,232,0.03) 1px, transparent 1px, transparent 50px);
+    }
+    .delia-right-text {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 2rem;
+    }
+    .drt-quote { font-size: 1.1rem; color: rgba(0,212,232,0.7); font-style: italic; line-height: 1.5; margin-bottom: 0.5rem; }
+    .drt-attr { font-size: 0.72rem; color: rgba(0,212,232,0.35); letter-spacing: 0.1em; }
+
+    .delia-programme {
+      border-top: 1px solid rgba(0,212,232,0.08);
+      padding: 3rem 2rem;
+    }
+    .dp-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(0,212,232,0.3); margin-bottom: 1.5rem; }
+    .dp-events { display: flex; flex-direction: column; }
+    .dp-event {
+      display: grid;
+      grid-template-columns: 180px 1fr 140px 70px;
+      gap: 2rem;
+      align-items: center;
+      padding: 1rem 0;
+      border-top: 1px solid rgba(0,212,232,0.06);
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .dp-event:hover { border-color: rgba(0,212,232,0.25); }
+    .dp-date { font-size: 0.72rem; color: var(--delia); opacity: 0.7; }
+    .dp-name { font-size: 0.9rem; font-weight: 600; color: rgba(255,255,255,0.75); }
+    .dp-venue { font-size: 0.72rem; color: rgba(0,212,232,0.3); }
+    .dp-price { font-size: 0.8rem; color: var(--delia); text-align: right; }
+
+    /* ── BOUDICA PANEL ── */
+    #panel-boudica { background: #040800; }
+
+    .boudica-full {
+      position: relative;
+      min-height: 85vh;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+    }
+    .boudica-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('rock1.jpeg');
+      background-size: cover;
+      background-position: center top;
+      filter: sepia(70%) brightness(0.3) saturate(2);
+    }
+    .boudica-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(4,8,0,0.98) 20%, rgba(4,8,0,0.5) 60%, rgba(4,8,0,0.2) 100%);
+    }
+    .boudica-content {
+      position: relative;
+      z-index: 2;
+      padding: 4rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: flex-end;
+      gap: 3rem;
+    }
+    @media (max-width: 700px) { .boudica-content { grid-template-columns: 1fr; } }
+
+    .boudica-main-title {
+      font-size: clamp(4rem, 12vw, 10rem);
+      font-weight: 900;
+      letter-spacing: -0.06em;
+      line-height: 0.85;
+      color: var(--boudica);
+      text-shadow: 0 0 80px rgba(201,168,76,0.15);
+    }
+    .boudica-sub-info {
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      color: rgba(201,168,76,0.4);
+      text-transform: uppercase;
+      margin-top: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .boudica-blurb { font-size: 1rem; color: rgba(201,168,76,0.4); line-height: 1.7; max-width: 500px; margin-bottom: 1.5rem; }
+    .btn-boudica { display: inline-block; padding: 0.65rem 1.4rem; background: var(--boudica); color: #000; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; }
+
+    .boudica-aside { text-align: right; }
+    .boudica-dates { font-size: 3rem; font-weight: 900; color: rgba(201,168,76,0.6); line-height: 1; }
+    .boudica-month { font-size: 0.7rem; letter-spacing: 0.2em; color: rgba(201,168,76,0.3); text-transform: uppercase; margin-top: 0.25rem; }
+
+    .boudica-lineup-strip {
+      padding: 3rem 2rem;
+      border-top: 1px solid rgba(201,168,76,0.07);
+    }
+    .bl-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(201,168,76,0.3); margin-bottom: 2rem; }
+    .bl-tiers { display: flex; flex-direction: column; gap: 1.5rem; }
+    .bl-tier { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+    .bl-tier-name { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(201,168,76,0.25); min-width: 80px; }
+    .act { font-size: 0.85rem; font-weight: 600; color: rgba(201,168,76,0.7); padding: 0.3rem 0.7rem; border: 1px solid rgba(201,168,76,0.12); cursor: pointer; transition: border-color 0.2s, color 0.2s; }
+    .act:hover { border-color: rgba(201,168,76,0.4); color: var(--boudica); }
+    .act.headliner { font-size: 1.3rem; color: var(--boudica); border-color: rgba(201,168,76,0.25); }
+
+    /* ── LOS PANEL ── */
+    #panel-los { background: #080100; }
+
+    .los-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 82vh;
+    }
+    @media (max-width: 700px) { .los-split { grid-template-columns: 1fr; } }
+
+    .los-left {
+      position: relative;
+      overflow: hidden;
+    }
+    .los-left img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(0.6) brightness(0.7); }
+    .los-left::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, transparent 60%, rgba(8,1,0,1));
+    }
+
+    .los-right {
+      padding: 4rem 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-left: 1px solid rgba(249,115,22,0.08);
+    }
+    .los-eyebrow { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(249,115,22,0.5); margin-bottom: 1.25rem; }
+    .los-h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; letter-spacing: -0.04em; line-height: 0.95; margin-bottom: 0.25rem; }
+    .los-h1 span { color: var(--los); text-shadow: 0 0 30px rgba(249,115,22,0.35); }
+    .los-tagline { font-size: 0.9rem; color: rgba(249,115,22,0.35); line-height: 1.7; max-width: 400px; margin: 1.25rem 0 2rem; }
+    .btn-los { display: inline-block; padding: 0.65rem 1.4rem; background: var(--los); color: #000; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; margin-bottom: 3rem; }
+
+    .los-facts { display: flex; flex-direction: column; gap: 0.75rem; border-top: 1px solid rgba(249,115,22,0.08); padding-top: 2rem; }
+    .los-fact { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(249,115,22,0.05); }
+    .lf-key { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(249,115,22,0.3); }
+    .lf-val { font-size: 0.9rem; font-weight: 700; color: rgba(249,115,22,0.8); }
+
+    .los-gigs {
+      padding: 3rem 2rem;
+      border-top: 1px solid rgba(249,115,22,0.07);
+    }
+    .lg-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(249,115,22,0.3); margin-bottom: 1.5rem; }
+    .gig-row {
+      display: grid;
+      grid-template-columns: 100px 1fr auto;
+      gap: 2rem;
+      align-items: center;
+      padding: 1rem 0;
+      border-top: 1px solid rgba(249,115,22,0.06);
+      cursor: pointer;
+      transition: padding-left 0.2s;
+    }
+    .gig-row:hover { padding-left: 0.5rem; }
+    .gr-date { font-size: 0.72rem; color: rgba(249,115,22,0.6); letter-spacing: 0.05em; }
+    .gr-name { font-size: 0.9rem; font-weight: 600; color: rgba(255,255,255,0.7); }
+    .gr-venue { font-size: 0.72rem; color: rgba(249,115,22,0.25); text-align: right; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #000;
+      border-top: 1px solid #0d0d0d;
+      padding: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4rem;
+    }
+    footer p { font-size: 0.72rem; color: #333; }
+    .back-link { font-size: 0.72rem; color: #444; text-decoration: none; }
+    .back-link:hover { color: #fff; }
+  </style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<div class="topnav">
+  <a class="tin-mark" href="#">
+    <div>
+      <div class="tin-mark-text">The Tin</div>
+      <div class="tin-mark-bar">
+        <span style="background:#d85b61"></span>
+        <span style="background:#edc656"></span>
+        <span style="background:#0b8793"></span>
+      </div>
+    </div>
+    <div class="tin-mark-sub">Music and Arts</div>
+  </a>
+  <div class="nav-divider"></div>
+  <div class="brand-pills">
+    <div class="brand-pill active" data-brand="tin" onclick="switchBrand('tin')">The Tin</div>
+    <div class="brand-pill inactive" data-brand="delia" onclick="switchBrand('delia')">Deliaphonic</div>
+    <div class="brand-pill inactive" data-brand="boudica" onclick="switchBrand('boudica')">Boudica Festival</div>
+    <div class="brand-pill inactive" data-brand="los" onclick="switchBrand('los')">Live on Stage</div>
+  </div>
+  <div class="nav-end">
+    <a href="#">About</a>
+    <a href="#">Venue Hire</a>
+    <a href="#">Donate</a>
+  </div>
+</div>
+<div class="accent-line accent-tin" id="accent-line"></div>
+
+<!-- THE TIN -->
+<div id="panel-tin" class="panel active">
+  <div class="tin-hero-split">
+    <div class="tin-hero-left">
+      <div class="featured-label">Featured Event</div>
+      <div class="featured-event">
+        <div class="feat-date">Tuesday 10th September</div>
+        <div class="feat-by">Sink or Swim presents</div>
+        <div class="feat-title">Charlie Parr</div>
+        <div class="feat-quote">"The humble master of the 21st century folk tradition." Rolling Stone</div>
+        <div class="feat-actions">
+          <a href="#" class="btn-white">Get Tickets</a>
+          <a href="#" class="btn-ghost">View All Events</a>
+        </div>
+      </div>
+    </div>
+    <div class="tin-hero-right">
+      <img src="charlie_parr.jpg" alt="Charlie Parr" />
+    </div>
+  </div>
+
+  <div class="tin-next-events">
+    <div class="next-header">
+      <span class="next-label">What's On</span>
+      <a href="#" class="next-more">See all events</a>
+    </div>
+    <div class="next-events-list">
+      <div class="next-event">
+        <div class="ne-date">Wed 9 Oct</div>
+        <div class="ne-name">Jeffrey Lewis &amp; The Voltage</div>
+        <div class="ne-venue">The Coal Vaults</div>
+        <div class="ne-price">£12</div>
+      </div>
+      <div class="next-event">
+        <div class="ne-date">Sat 18 Oct</div>
+        <div class="ne-name">Kitchen Club Indie Disco</div>
+        <div class="ne-venue">The Coal Vaults</div>
+        <div class="ne-price">£8</div>
+      </div>
+      <div class="next-event">
+        <div class="ne-date">TBC</div>
+        <div class="ne-name">Harpsichord Orchestra</div>
+        <div class="ne-venue">The Coal Vaults</div>
+        <div class="ne-price">£10</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tin-grid-section">
+    <div class="tgs-header">
+      <span class="tgs-label">More Events</span>
+      <a href="#" class="tgs-more">Browse all</a>
+    </div>
+    <div class="event-masonry">
+      <div class="em-item"><img src="rock1.jpeg" alt="Harpsichord Orchestra" /><div class="em-info"><div class="em-name">Harpsichord Orchestra</div><div class="em-price">£10</div></div></div>
+      <div class="em-item"><img src="rock2.jpeg" alt="Kevin Sings" /><div class="em-info"><div class="em-name">Kevin Sings</div><div class="em-price">£14 ADV</div></div></div>
+      <div class="em-item"><img src="rock3.jpeg" alt="Jam with your Nan" /><div class="em-info"><div class="em-name">Jam with your Nan</div><div class="em-price">£3 / £4 OTD</div></div></div>
+      <div class="em-item"><img src="rock4.jpeg" alt="Shout at the Trout" /><div class="em-info"><div class="em-name">Shout at the Trout</div><div class="em-price">£3 / £4 OTD</div></div></div>
+      <div class="em-item"><img src="rock5.jpeg" alt="Jazz with Baz" /><div class="em-info"><div class="em-name">Jazz with Baz</div><div class="em-price">£3 / £4 OTD</div></div></div>
+      <div class="em-item"><img src="yoga.jpeg" alt="Pop and Plop" /><div class="em-info"><div class="em-name">Pop and Plop</div><div class="em-price">£3 / £4 OTD</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- DELIAPHONIC -->
+<div id="panel-delia" class="panel">
+  <div class="delia-hero">
+    <div class="delia-left">
+      <div class="delia-tag">A Tin Music and Arts Production</div>
+      <div class="delia-big"><span class="cyan">Delia</span><span class="red">phonic</span></div>
+      <div class="delia-intro">A celebration of the life and work of Delia Derbyshire in her home city of Coventry. Born here in 1937. Her pioneering work at the BBC Radiophonic Workshop shaped the sound of a generation.</div>
+      <div class="delia-detail">Featuring Delia Derbyshire Day, the Delia's Sea of Sounds installation, film screenings of The Myths and the Legendary Tapes, archive concert videos, and past events from across the years.</div>
+      <a href="#" class="btn-delia">Explore the Programme</a>
+    </div>
+    <div class="delia-right">
+      <img src="rock4.jpeg" alt="Deliaphonic" />
+      <div class="delia-right-grid"></div>
+      <div class="delia-right-text">
+        <div class="drt-quote">"She was working at the outer limits of what was possible."</div>
+        <div class="drt-attr">Brian Hodgson, BBC Radiophonic Workshop</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="delia-programme">
+    <div class="dp-label">Deliaphonic 2022</div>
+    <div class="dp-events">
+      <div class="dp-event">
+        <div class="dp-date">Delia Derbyshire Day</div>
+        <div class="dp-name">Annual celebration of Delia's life and music</div>
+        <div class="dp-venue">Coventry</div>
+        <div class="dp-price">Free</div>
+      </div>
+      <div class="dp-event">
+        <div class="dp-date">Delia's Sea of Sounds</div>
+        <div class="dp-name">Immersive audio installation from Delia's archive recordings</div>
+        <div class="dp-venue">The Coal Vaults</div>
+        <div class="dp-price">Free</div>
+      </div>
+      <div class="dp-event">
+        <div class="dp-date">The Film</div>
+        <div class="dp-name">Delia Derbyshire: The Myths and the Legendary Tapes</div>
+        <div class="dp-venue">Coventry Cathedral</div>
+        <div class="dp-price">£10</div>
+      </div>
+      <div class="dp-event">
+        <div class="dp-date">Concert Videos</div>
+        <div class="dp-name">Archive performances and live recordings</div>
+        <div class="dp-venue">Online</div>
+        <div class="dp-price">Free</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BOUDICA FESTIVAL -->
+<div id="panel-boudica" class="panel">
+  <div class="boudica-full">
+    <div class="boudica-bg"></div>
+    <div class="boudica-overlay"></div>
+    <div class="boudica-content">
+      <div>
+        <div class="boudica-main-title">Boudica</div>
+        <div class="boudica-sub-info">Festival · Est. 2017 · Coventry</div>
+        <div class="boudica-blurb">Celebrating emerging women and non-binary musicians across all genres. Firmly on the frontline in the fight against inequality in the music industry. Part of The Tin Music and Arts.</div>
+        <a href="#" class="btn-boudica">Buy Tickets</a>
+      </div>
+      <div class="boudica-aside">
+        <div class="boudica-dates">Du<br>Blonde</div>
+        <div class="boudica-month">Sat 5 July · Godiva Festival</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="boudica-lineup-strip">
+    <div class="bl-label">Upcoming</div>
+    <div class="bl-tiers">
+      <div class="bl-tier">
+        <span class="bl-tier-name">Sat 5 July</span>
+        <span class="act headliner">Du Blonde</span>
+        <span class="act" style="opacity:0.4;">+ More TBA</span>
+      </div>
+    </div>
+    <p style="font-size:0.85rem; color:rgba(201,168,76,0.35); line-height:1.75; max-width:680px; margin-top:2rem; padding-top:2rem; border-top:1px solid rgba(201,168,76,0.07);">Named after the warrior queen believed to have fought her final battle north of Coventry, Boudica has run since 2017. Events include live festivals, music video competitions, film screenings, and International Women's Day celebrations for West Midlands artists. Boudica also develops sound engineers, lighting technicians, and stage managers - not just performers.</p>
+  </div>
+</div>
+
+<!-- LIVE ON STAGE -->
+<div id="panel-los" class="panel">
+  <div class="los-split">
+    <div class="los-left">
+      <img src="rock2.jpeg" alt="Live on Stage" />
+    </div>
+    <div class="los-right">
+      <div class="los-eyebrow">The Tin Youth Programme</div>
+      <div class="los-h1">Live<br><span>on Stage</span></div>
+      <div class="los-tagline">Young musicians form rock bands, develop songwriting skills, learn about the music industry, and perform live. For instrumentalists aged 11 to 18 at Grade 4 and above.</div>
+      <a href="#" class="btn-los">Apply for 2025 to 26</a>
+      <div class="los-facts">
+        <div class="los-fact"><span class="lf-key">When</span><span class="lf-val">Mondays, 6 to 8pm</span></div>
+        <div class="los-fact"><span class="lf-key">Where</span><span class="lf-val">The Coal Vaults</span></div>
+        <div class="los-fact"><span class="lf-key">Age</span><span class="lf-val">11 to 18</span></div>
+        <div class="los-fact"><span class="lf-key">Grade</span><span class="lf-val">Grade 4 and above</span></div>
+        <div class="los-fact"><span class="lf-key">Cost</span><span class="lf-val">£80 per term</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="los-gigs">
+    <div class="lg-label">Gig Nights</div>
+    <div class="gig-row"><div class="gr-date">December</div><div class="gr-name">Winter Showcase</div><div class="gr-venue">The Coal Vaults</div></div>
+    <div class="gig-row"><div class="gr-date">March</div><div class="gr-name">Spring Gig Night</div><div class="gr-venue">The Coal Vaults</div></div>
+    <div class="gig-row"><div class="gr-date">July</div><div class="gr-name">End of Year Celebration</div><div class="gr-venue">The Coal Vaults</div></div>
+  </div>
+</div>
+
+<footer>
+  <p>The Tin Music and Arts · Units 1 to 4, The Canal Basin, CV1 4LY · Tel: 02476 230 699 · Registered Charity No. 1152636</p>
+  <a href="index.html" class="back-link">Back to design options</a>
+</footer>
+
+<script>
+  const accents = {
+    tin: 'accent-tin',
+    delia: 'accent-delia',
+    boudica: 'accent-boudica',
+    los: 'accent-los'
+  };
+
+  function switchBrand(brand) {
+    document.querySelectorAll('.brand-pill').forEach(p => {
+      p.classList.toggle('active', p.dataset.brand === brand);
+      p.classList.toggle('inactive', p.dataset.brand !== brand);
+    });
+    document.querySelectorAll('.panel').forEach(p => {
+      p.classList.toggle('active', p.id === 'panel-' + brand);
+    });
+    const line = document.getElementById('accent-line');
+    line.className = 'accent-line ' + accents[brand];
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>

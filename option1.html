@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Tin - Option 1: The Filing Cabinet</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --tin-bg: #000;
+      --tin-accent1: #d85b61;
+      --tin-accent2: #edc656;
+      --tin-accent3: #0b8793;
+      --delia-bg: #000;
+      --delia-cyan: #00d4e8;
+      --delia-red: #e8002a;
+      --delia-accent: #00d4e8;
+      --boudica-bg: #0a1200;
+      --boudica-accent: #c9a84c;
+      --los-bg: #120000;
+      --los-accent: #f97316;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #000;
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    /* ── TOP CHROME ── */
+    .chrome {
+      background: #000;
+      padding: 1rem 2rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: none;
+    }
+
+    .chrome-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .chrome-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 0;
+    }
+
+    .brand-mark {
+      display: flex;
+      flex-direction: column;
+      padding-right: 1.5rem;
+      padding-bottom: 0;
+      flex-shrink: 0;
+    }
+
+    .tin-logo-text {
+      font-size: 2rem;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      color: #fff;
+      text-shadow: 0 0 8px rgba(255,255,255,0.95), 0 0 20px rgba(255,255,255,0.6), 0 0 45px rgba(255,255,255,0.25);
+      line-height: 1;
+    }
+
+    .tin-sub {
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #666;
+      padding-bottom: 0.15rem;
+    }
+
+    .tin-bar {
+      display: flex;
+      height: 4px;
+      width: 80px;
+      margin-top: 4px;
+    }
+    .tin-bar span { flex: 1; }
+
+    .global-links {
+      display: flex;
+      gap: 1.5rem;
+      margin-left: auto;
+      padding-bottom: 0.6rem;
+      align-self: flex-end;
+      flex-shrink: 0;
+    }
+    .global-links a {
+      color: #555;
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+      transition: color 0.2s;
+    }
+    .global-links a:hover { color: #fff; }
+
+    /* ── FOLDER TABS ── */
+    .tab-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+    }
+
+    .tab {
+      padding: 0.6rem 1.4rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: 1px solid transparent;
+      border-bottom: none;
+      border-radius: 4px 4px 0 0;
+      transition: background 0.15s, color 0.15s;
+      user-select: none;
+      position: relative;
+      bottom: -1px;
+    }
+
+    .tab[data-brand="tin"] {
+      background: #fff;
+      color: #000;
+      border-color: #fff;
+      z-index: 2;
+    }
+    .tab[data-brand="tin"].inactive {
+      background: #1a1a1a;
+      color: #999;
+      border-color: #333;
+    }
+    .tab[data-brand="tin"].inactive:hover { background: #222; color: #ccc; }
+
+    .tab[data-brand="delia"] {
+      background: var(--delia-accent);
+      color: #000;
+      border-color: var(--delia-accent);
+      z-index: 2;
+    }
+    .tab[data-brand="delia"].inactive {
+      background: rgba(0,212,232,0.12);
+      color: var(--delia-accent);
+      border-color: rgba(0,212,232,0.3);
+    }
+    .tab[data-brand="delia"].inactive:hover { background: rgba(0,212,232,0.2); }
+
+    .tab[data-brand="boudica"] {
+      background: var(--boudica-accent);
+      color: #000;
+      border-color: var(--boudica-accent);
+      z-index: 2;
+    }
+    .tab[data-brand="boudica"].inactive {
+      background: rgba(201,168,76,0.12);
+      color: var(--boudica-accent);
+      border-color: rgba(201,168,76,0.3);
+    }
+    .tab[data-brand="boudica"].inactive:hover { background: rgba(201,168,76,0.2); }
+
+    .tab[data-brand="los"] {
+      background: var(--los-accent);
+      color: #000;
+      border-color: var(--los-accent);
+      z-index: 2;
+    }
+    .tab[data-brand="los"].inactive {
+      background: rgba(249,115,22,0.12);
+      color: var(--los-accent);
+      border-color: rgba(249,115,22,0.3);
+    }
+    .tab[data-brand="los"].inactive:hover { background: rgba(249,115,22,0.2); }
+
+    /* ── CONTENT PANELS ── */
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* ── THE TIN PANEL ── */
+    #panel-tin { background: #000; }
+
+    .tin-hero {
+      position: relative;
+      height: 85vh;
+      overflow: hidden;
+      border-top: 2px solid #fff;
+    }
+
+    .tin-hero-slides { position: relative; height: 100%; }
+
+    .tin-slide {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+    .tin-slide.active { opacity: 1; }
+    .tin-slide::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
+    }
+
+    .tin-slide-info {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 2.5rem;
+      z-index: 10;
+      max-width: 520px;
+    }
+    .event-date { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: #aaa; margin-bottom: 0.5rem; }
+    .event-presenter { font-size: 0.85rem; color: #ccc; margin-bottom: 0.25rem; }
+    .event-title { font-size: 3rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1; margin-bottom: 0.5rem; }
+    .event-quote { font-size: 0.85rem; color: #aaa; font-style: italic; margin-bottom: 1rem; }
+    .btn {
+      display: inline-block;
+      padding: 0.6rem 1.4rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.8; }
+    .btn-white { background: #fff; color: #000; }
+
+    .slide-dots {
+      position: absolute;
+      bottom: 2.5rem;
+      right: 2.5rem;
+      z-index: 10;
+      display: flex;
+      gap: 8px;
+    }
+    .slide-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .slide-dot.active { background: #fff; }
+
+    .tin-about {
+      padding: 3rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      border-top: 1px solid #1a1a1a;
+    }
+    .section-label { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: #555; margin-bottom: 1.5rem; }
+    .tin-about p { font-size: 1.1rem; color: #ccc; line-height: 1.7; max-width: 700px; }
+
+    .events-grid {
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .events-grid h2 { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: #555; margin-bottom: 1.5rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1px; background: #111; }
+    .grid-item {
+      background: #000;
+      padding: 0;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .grid-item:hover { background: #0d0d0d; }
+    .grid-item img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; filter: grayscale(20%); }
+    .grid-item-info { padding: 0.75rem; }
+    .grid-item-name { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .grid-item-price { font-size: 0.75rem; color: #666; }
+
+    /* ── DELIAPHONIC PANEL ── */
+    #panel-delia { background: var(--delia-bg); border-top: 2px solid var(--delia-accent); }
+
+    .delia-hero {
+      padding: 4rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      min-height: 70vh;
+    }
+    @media (max-width: 768px) { .delia-hero { grid-template-columns: 1fr; min-height: auto; } }
+
+    .delia-text .brand-name {
+      font-size: 4rem;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      color: var(--delia-accent);
+      text-shadow: 0 0 30px rgba(0,212,232,0.4);
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+    .delia-text .tagline { font-size: 1rem; color: #b89edd; margin-bottom: 1.5rem; line-height: 1.6; }
+    .delia-text p { font-size: 0.9rem; color: #8a7aaa; line-height: 1.7; margin-bottom: 1rem; }
+    .btn-delia { background: var(--delia-accent); color: #000; }
+
+    .delia-visual { position: relative; }
+    .delia-visual img {
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      filter: hue-rotate(240deg) saturate(0.6) brightness(0.7);
+    }
+    .delia-visual-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0,212,232,0.15), transparent);
+      mix-blend-mode: screen;
+    }
+
+    .delia-events {
+      background: rgba(0,212,232,0.05);
+      border-top: 1px solid rgba(0,212,232,0.15);
+      padding: 3rem 2rem;
+    }
+    .delia-events-inner { max-width: 1200px; margin: 0 auto; }
+    .event-list { display: flex; flex-direction: column; gap: 1px; }
+    .event-row {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(0,212,232,0.1);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .event-row:hover { padding-left: 0.5rem; }
+    .event-row-date { font-size: 0.75rem; color: var(--delia-accent); letter-spacing: 0.1em; min-width: 120px; }
+    .event-row-name { font-size: 1rem; font-weight: 600; color: #ddd; }
+    .event-row-venue { font-size: 0.8rem; color: #665588; margin-left: auto; }
+    .event-row-price { font-size: 0.8rem; color: var(--delia-accent); min-width: 60px; text-align: right; }
+
+    /* ── BOUDICA PANEL ── */
+    #panel-boudica { background: var(--boudica-bg); border-top: 2px solid var(--boudica-accent); }
+
+    .boudica-hero {
+      position: relative;
+      min-height: 70vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+    .boudica-hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('rock5.jpeg');
+      background-size: cover;
+      background-position: center;
+      filter: sepia(60%) brightness(0.35) saturate(1.5);
+    }
+    .boudica-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(10,18,0,0.95) 40%, rgba(10,18,0,0.4));
+    }
+    .boudica-hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 3rem 2rem;
+      max-width: 600px;
+    }
+    .boudica-title {
+      font-size: 5rem;
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      color: var(--boudica-accent);
+      text-shadow: 0 0 40px rgba(201,168,76,0.3);
+      line-height: 0.9;
+      margin-bottom: 0.5rem;
+    }
+    .boudica-year { font-size: 0.8rem; letter-spacing: 0.3em; color: #666; text-transform: uppercase; margin-bottom: 1.5rem; }
+    .boudica-desc { font-size: 1rem; color: #a89060; line-height: 1.7; margin-bottom: 2rem; }
+    .btn-boudica { background: var(--boudica-accent); color: #000; }
+
+    .boudica-lineup {
+      padding: 3rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .lineup-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1px; background: rgba(201,168,76,0.1); }
+    .lineup-act {
+      background: var(--boudica-bg);
+      padding: 1.5rem 1rem;
+      text-align: center;
+      cursor: pointer;
+    }
+    .lineup-act:hover { background: rgba(201,168,76,0.05); }
+    .act-name { font-size: 0.95rem; font-weight: 700; color: var(--boudica-accent); margin-bottom: 0.25rem; }
+    .act-stage { font-size: 0.7rem; color: #555; letter-spacing: 0.1em; text-transform: uppercase; }
+    .act-time { font-size: 0.75rem; color: #665533; margin-top: 0.25rem; }
+
+    /* ── LIVE ON STAGE PANEL ── */
+    #panel-los { background: var(--los-bg); border-top: 2px solid var(--los-accent); }
+
+    .los-hero {
+      padding: 4rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .los-eyebrow { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--los-accent); margin-bottom: 1rem; }
+    .los-title { font-size: 4.5rem; font-weight: 900; letter-spacing: -0.04em; line-height: 0.95; margin-bottom: 1.5rem; }
+    .los-title em { font-style: normal; color: var(--los-accent); }
+    .los-sub { font-size: 1rem; color: #aa7755; max-width: 600px; line-height: 1.7; margin-bottom: 2rem; }
+    .btn-los { background: var(--los-accent); color: #000; }
+
+    .los-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1px;
+      background: rgba(249,115,22,0.1);
+      margin-top: 3rem;
+    }
+    .los-detail {
+      background: var(--los-bg);
+      padding: 1.5rem;
+    }
+    .los-detail-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--los-accent); margin-bottom: 0.5rem; }
+    .los-detail-value { font-size: 1.1rem; font-weight: 700; color: #fff; }
+    .los-detail-note { font-size: 0.8rem; color: #664422; margin-top: 0.25rem; }
+
+    .los-gallery {
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .los-gallery-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 4px; }
+    @media (max-width: 600px) { .los-gallery-grid { grid-template-columns: 1fr; } }
+    .los-gallery-grid img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; filter: saturate(0.7) brightness(0.8); }
+    .los-gallery-grid img:first-child { aspect-ratio: 2/1; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #000;
+      border-top: 1px solid #111;
+      padding: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4rem;
+    }
+    footer p { font-size: 0.75rem; color: #444; }
+    .back-link { font-size: 0.75rem; color: #555; text-decoration: none; }
+    .back-link:hover { color: #fff; }
+  </style>
+</head>
+<body>
+
+<div class="chrome">
+  <div class="chrome-inner">
+    <div class="chrome-row">
+      <div class="brand-mark">
+        <div class="tin-logo-text">The Tin</div>
+        <div class="tin-sub">Music and Arts</div>
+        <div class="tin-bar">
+          <span style="background:#d85b61"></span>
+          <span style="background:#edc656"></span>
+          <span style="background:#0b8793"></span>
+        </div>
+      </div>
+      <div class="tab-row">
+        <div class="tab active" data-brand="tin" onclick="switchBrand('tin')">The Tin</div>
+        <div class="tab inactive" data-brand="delia" onclick="switchBrand('delia')">Deliaphonic</div>
+        <div class="tab inactive" data-brand="boudica" onclick="switchBrand('boudica')">Boudica Festival</div>
+        <div class="tab inactive" data-brand="los" onclick="switchBrand('los')">Live on Stage</div>
+      </div>
+      <div class="global-links">
+        <a href="#">About</a>
+        <a href="#">Venue Hire</a>
+        <a href="#">Subscribe</a>
+        <a href="#">Donate</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- THE TIN -->
+<div id="panel-tin" class="panel active">
+  <div class="tin-hero">
+    <div class="tin-hero-slides">
+      <div class="tin-slide active" style="background-image:url('charlie_parr.jpg')">
+        <div class="tin-slide-info">
+          <div class="event-date">Tuesday 10th September</div>
+          <div class="event-presenter">Sink or Swim presents</div>
+          <div class="event-title">Charlie Parr</div>
+          <div class="event-quote">"The humble master of the 21st century folk tradition" - Rolling Stone</div>
+          <a href="#" class="btn btn-white">Get Tickets</a>
+        </div>
+      </div>
+      <div class="tin-slide" style="background-image:url('jeffrey_lewis.jpg')">
+        <div class="tin-slide-info">
+          <div class="event-date">Wednesday 9th October</div>
+          <div class="event-presenter">Songwriter &amp; comic book artist</div>
+          <div class="event-title">Jeffrey Lewis &amp; The Voltage</div>
+          <div class="event-quote">"Weird? Very… but also downright inspiring" - Rolling Stone</div>
+          <a href="#" class="btn btn-white">Get Tickets</a>
+        </div>
+      </div>
+      <div class="tin-slide" style="background-image:url('kitchen-club.jpg')">
+        <div class="tin-slide-info">
+          <div class="event-date">Saturday 18th October</div>
+          <div class="event-presenter">A proper shindig</div>
+          <div class="event-title">Kitchen Club Indie Disco</div>
+          <div class="event-quote">Coventry's best night out returns</div>
+          <a href="#" class="btn btn-white">Get Tickets</a>
+        </div>
+      </div>
+    </div>
+    <div class="slide-dots">
+      <div class="slide-dot active" onclick="goSlide(0)"></div>
+      <div class="slide-dot" onclick="goSlide(1)"></div>
+      <div class="slide-dot" onclick="goSlide(2)"></div>
+    </div>
+  </div>
+
+  <div class="tin-about">
+    <div class="section-label">About</div>
+    <p>The Tin Music and Arts is dedicated to fostering a vibrant artistic community in Coventry. We host live music events featuring both international and local artists and offer diverse programmes and activities in our venue at the Coal Vaults and other city locations.</p>
+  </div>
+
+  <div class="events-grid">
+    <h2>More Events</h2>
+    <div class="grid">
+      <div class="grid-item">
+        <img src="rock1.jpeg" alt="Harpsichord Orchestra" />
+        <div class="grid-item-info">
+          <div class="grid-item-name">Harpsichord Orchestra</div>
+          <div class="grid-item-price">£10</div>
+        </div>
+      </div>
+      <div class="grid-item">
+        <img src="rock2.jpeg" alt="Kevin Sings" />
+        <div class="grid-item-info">
+          <div class="grid-item-name">Kevin Sings</div>
+          <div class="grid-item-price">£14 ADV / £99 OTD</div>
+        </div>
+      </div>
+      <div class="grid-item">
+        <img src="rock3.jpeg" alt="Jam with your Nan" />
+        <div class="grid-item-info">
+          <div class="grid-item-name">Jam with your Nan</div>
+          <div class="grid-item-price">£3 / £4 OTD</div>
+        </div>
+      </div>
+      <div class="grid-item">
+        <img src="rock4.jpeg" alt="Shout at the Trout" />
+        <div class="grid-item-info">
+          <div class="grid-item-name">Shout at the Trout</div>
+          <div class="grid-item-price">£3 / £4 OTD</div>
+        </div>
+      </div>
+      <div class="grid-item">
+        <img src="rock5.jpeg" alt="Jazz with Baz" />
+        <div class="grid-item-info">
+          <div class="grid-item-name">Jazz with Baz</div>
+          <div class="grid-item-price">£3 / £4 OTD</div>
+        </div>
+      </div>
+      <div class="grid-item">
+        <img src="yoga.jpeg" alt="Pop and Plop" />
+        <div class="grid-item-info">
+          <div class="grid-item-name">Pop and Plop</div>
+          <div class="grid-item-price">£3 / £4 OTD</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DELIAPHONIC -->
+<div id="panel-delia" class="panel">
+  <div class="delia-hero">
+    <div class="delia-text">
+      <div class="brand-name" style="font-size:3.5rem; line-height:1;">
+        <span style="color:var(--delia-cyan)">Delia</span><span style="color:var(--delia-red)">phonic</span>
+      </div>
+      <div class="tagline" style="color:#aaa; margin-top:1rem;">A celebration of the life and work of Delia Derbyshire in her home city of Coventry.</div>
+      <p style="color:#888; margin-top:0.75rem;">Delia Derbyshire was born in Coventry in 1937. A pioneering electronic composer, her work at the BBC Radiophonic Workshop shaped the sound of a generation. Deliaphonic brings her spirit back home.</p>
+      <p style="color:#888; margin-top:0.75rem;">Featuring live performances, Delia's Sea of Sounds installation, Delia Derbyshire Day, concert film screenings, and the documentary <em>The Myths and the Legendary Tapes</em>.</p>
+      <a href="#" class="btn btn-delia" style="margin-top:1.5rem;">Explore Deliaphonic 2022</a>
+    </div>
+    <div class="delia-visual" style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2rem;">
+      <svg viewBox="0 0 200 110" width="260" style="display:block;">
+        <circle cx="70" cy="55" r="52" fill="#00d4e8" opacity="0.85"/>
+        <circle cx="130" cy="55" r="52" fill="#e8002a" opacity="0.85"/>
+        <circle cx="70" cy="55" r="52" fill="none"/>
+        <text x="100" y="62" text-anchor="middle" font-family="Inter,sans-serif" font-size="22" font-weight="900" fill="#000" letter-spacing="-1">Deliaphonic</text>
+      </svg>
+      <div style="font-size:0.75rem; letter-spacing:0.2em; text-transform:uppercase; color:#333; text-align:center;">A Tin Music and Arts Production</div>
+    </div>
+  </div>
+
+  <div class="delia-events">
+    <div class="delia-events-inner">
+      <div class="section-label" style="color:var(--delia-cyan);">Deliaphonic 2022</div>
+      <div class="event-list">
+        <div class="event-row">
+          <div class="event-row-date" style="color:var(--delia-cyan);">Delia Derbyshire Day</div>
+          <div class="event-row-name">Annual celebration of Delia's life and music</div>
+          <div class="event-row-venue">Coventry</div>
+          <div class="event-row-price">Free</div>
+        </div>
+        <div class="event-row">
+          <div class="event-row-date" style="color:var(--delia-cyan);">Delia's Sea of Sounds</div>
+          <div class="event-row-name">Immersive audio installation inspired by Delia's archive recordings</div>
+          <div class="event-row-venue">The Coal Vaults</div>
+          <div class="event-row-price">Free</div>
+        </div>
+        <div class="event-row">
+          <div class="event-row-date" style="color:var(--delia-cyan);">The Film</div>
+          <div class="event-row-name">Delia Derbyshire: The Myths and the Legendary Tapes</div>
+          <div class="event-row-venue">Coventry Cathedral</div>
+          <div class="event-row-price">£10</div>
+        </div>
+        <div class="event-row">
+          <div class="event-row-date" style="color:var(--delia-cyan);">Concert Videos</div>
+          <div class="event-row-name">Archive performances and live recordings</div>
+          <div class="event-row-venue">Online</div>
+          <div class="event-row-price">Free</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BOUDICA FESTIVAL -->
+<div id="panel-boudica" class="panel">
+  <div class="boudica-hero">
+    <div class="boudica-hero-bg"></div>
+    <div class="boudica-hero-overlay"></div>
+    <div class="boudica-hero-content">
+      <div class="boudica-title">Boudica<br>Festival</div>
+      <div class="boudica-year">Coventry · Est. 2017</div>
+      <div class="boudica-desc">Celebrating emerging women and non-binary musicians across all genres. Firmly on the frontline in the fight against inequality in the music industry.</div>
+      <a href="#" class="btn btn-boudica">Buy Tickets</a>
+    </div>
+  </div>
+
+  <div class="boudica-lineup">
+    <div class="section-label" style="color:#c9a84c;">Upcoming</div>
+    <div class="lineup-grid">
+      <div class="lineup-act">
+        <div class="act-name">Du Blonde</div>
+        <div class="act-stage">with Godiva Festival</div>
+        <div class="act-time">Sat 5 July</div>
+      </div>
+      <div class="lineup-act" style="opacity:0.4;">
+        <div class="act-name">More TBA</div>
+        <div class="act-stage">All Stages</div>
+        <div class="act-time">Coming Soon</div>
+      </div>
+    </div>
+    <div style="margin-top:2rem; padding-top:2rem; border-top:1px solid rgba(201,168,76,0.1);">
+      <div class="section-label" style="color:#c9a84c; margin-bottom:1rem;">About</div>
+      <p style="font-size:0.9rem; color:#7a6630; line-height:1.75; max-width:700px;">Boudica is inspired by the warrior queen believed to have fought her final battle north of Coventry. Since 2017, the festival has organised live events, music video competitions, film screenings, and International Women's Day celebrations featuring West Midlands acts. As well as putting women and non-binary artists onstage, Boudica develops a crew of sound engineers, lighting technicians, and stage managers - highlighting career opportunities beyond performing.</p>
+    </div>
+  </div>
+</div>
+
+<!-- LIVE ON STAGE -->
+<div id="panel-los" class="panel">
+  <div class="los-hero">
+    <div class="los-eyebrow">The Tin Youth Programme</div>
+    <div class="los-title">Live<br><em>on Stage</em></div>
+    <div class="los-sub">Young musicians form rock bands, develop songwriting skills, learn about the music industry - and perform live. For instrumentalists aged 11–18 at Grade 4 and above.</div>
+    <a href="#" class="btn btn-los">Apply Now</a>
+
+    <div class="los-details">
+      <div class="los-detail">
+        <div class="los-detail-label">When</div>
+        <div class="los-detail-value">Mondays</div>
+        <div class="los-detail-note">6:00 – 8:00pm</div>
+      </div>
+      <div class="los-detail">
+        <div class="los-detail-label">Where</div>
+        <div class="los-detail-value">The Coal Vaults</div>
+        <div class="los-detail-note">Canal Basin, Coventry, CV1 4LY</div>
+      </div>
+      <div class="los-detail">
+        <div class="los-detail-label">Age</div>
+        <div class="los-detail-value">11 – 18</div>
+        <div class="los-detail-note">Grade 4+ instrumentalists</div>
+      </div>
+      <div class="los-detail">
+        <div class="los-detail-label">Cost</div>
+        <div class="los-detail-value">£80</div>
+        <div class="los-detail-note">Per term · Sep through Jul</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="los-gallery">
+    <div class="section-label" style="color:#f97316;">Performances</div>
+    <div class="los-gallery-grid">
+      <img src="rock1.jpeg" alt="Live on Stage performance" />
+      <img src="rock2.jpeg" alt="Live on Stage performance" />
+      <img src="rock3.jpeg" alt="Live on Stage performance" />
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>The Tin Music and Arts · Units 1–4, The Canal Basin, CV1 4LY · Tel: 02476 230 699 · Registered Charity No. 1152636</p>
+  <a href="index.html" class="back-link">← Back to design options</a>
+</footer>
+
+<script>
+  function switchBrand(brand) {
+    document.querySelectorAll('.tab').forEach(t => {
+      t.classList.toggle('active', t.dataset.brand === brand);
+      t.classList.toggle('inactive', t.dataset.brand !== brand);
+    });
+    document.querySelectorAll('.panel').forEach(p => {
+      p.classList.toggle('active', p.id === 'panel-' + brand);
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Slideshow
+  let currentSlide = 0;
+  const slides = document.querySelectorAll('.tin-slide');
+  const dots = document.querySelectorAll('.slide-dot');
+
+  function goSlide(n) {
+    slides[currentSlide].classList.remove('active');
+    dots[currentSlide].classList.remove('active');
+    currentSlide = n;
+    slides[currentSlide].classList.add('active');
+    dots[currentSlide].classList.add('active');
+  }
+
+  setInterval(() => goSlide((currentSlide + 1) % slides.length), 5000);
+</script>
+</body>
+</html>
