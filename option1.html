@@ -457,22 +457,61 @@
     .back-link { font-size: 0.75rem; color: #888; text-decoration: none; }
     .back-link:hover { color: #fff; }
 
+    /* ── BURGER ── */
+    .burger-btn { display: none; }
+    .mobile-menu { display: none; }
+
     /* ── MOBILE ── */
     @media (max-width: 700px) {
       .chrome { padding: 0.75rem 1rem 0; }
-      .chrome-row { flex-wrap: wrap; gap: 0; }
-      .brand-mark { width: 100%; padding-right: 0; padding-bottom: 0.75rem; }
+      .chrome-row { align-items: center; padding-bottom: 0.75rem; }
+      .brand-mark { padding-right: 0; padding-bottom: 0; }
       .global-links { display: none; }
-      .tab-row {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        flex-wrap: nowrap;
-        width: 100%;
-        gap: 2px;
-        scrollbar-width: none;
+      .tab-row { display: none; }
+
+      .burger-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        margin-left: auto;
+        background: none;
+        border: 1px solid #222;
+        color: #fff;
+        padding: 0.5rem 0.85rem;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        flex-shrink: 0;
       }
-      .tab-row::-webkit-scrollbar { display: none; }
-      .tab { white-space: nowrap; padding: 0.6rem 1rem; font-size: 0.72rem; flex-shrink: 0; }
+      .burger-icon { display: flex; flex-direction: column; gap: 4px; }
+      .burger-icon span { display: block; width: 16px; height: 1.5px; background: #fff; transition: transform 0.2s, opacity 0.2s; }
+      .burger-btn.open .burger-icon span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+      .burger-btn.open .burger-icon span:nth-child(2) { opacity: 0; }
+      .burger-btn.open .burger-icon span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+
+      .mobile-menu {
+        border-top: 1px solid #1a1a1a;
+      }
+      .mobile-menu.open { display: block; }
+      .mobile-menu-item {
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+        padding: 1rem 1.25rem;
+        cursor: pointer;
+        border-bottom: 1px solid #111;
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        transition: background 0.15s;
+        user-select: none;
+      }
+      .mobile-menu-item:active { background: #111; }
+      .mobile-menu-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
       .tin-hero { height: 70vh; }
       .tin-slide-info { left: 1rem; bottom: 1.5rem; right: 4rem; max-width: none; }
       .event-title { font-size: 2rem; }
@@ -519,6 +558,24 @@
         <a href="#">Subscribe</a>
         <a href="#">Donate</a>
       </div>
+      <button class="burger-btn" id="burger-btn" onclick="toggleMenu()" aria-label="Open menu">
+        <div class="burger-icon"><span></span><span></span><span></span></div>
+        <span id="burger-label">The Tin</span>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="mobile-menu-item" style="color:#fff;" onclick="switchBrand('tin')">
+      <div class="mobile-menu-dot" style="background:#fff;"></div>The Tin
+    </div>
+    <div class="mobile-menu-item" style="color:var(--delia-accent);" onclick="switchBrand('delia')">
+      <div class="mobile-menu-dot" style="background:var(--delia-accent);"></div>Deliaphonic
+    </div>
+    <div class="mobile-menu-item" style="color:var(--boudica-accent);" onclick="switchBrand('boudica')">
+      <div class="mobile-menu-dot" style="background:var(--boudica-accent);"></div>Boudica Festival
+    </div>
+    <div class="mobile-menu-item" style="color:var(--los-accent);" onclick="switchBrand('los')">
+      <div class="mobile-menu-dot" style="background:var(--los-accent);"></div>Live on Stage
     </div>
   </div>
 </div>
@@ -754,6 +811,8 @@
 </footer>
 
 <script>
+  const brandLabels = { tin: 'The Tin', delia: 'Deliaphonic', boudica: 'Boudica Festival', los: 'Live on Stage' };
+
   function switchBrand(brand) {
     document.querySelectorAll('.tab').forEach(t => {
       t.classList.toggle('active', t.dataset.brand === brand);
@@ -762,7 +821,19 @@
     document.querySelectorAll('.panel').forEach(p => {
       p.classList.toggle('active', p.id === 'panel-' + brand);
     });
+    document.getElementById('burger-label').textContent = brandLabels[brand];
+    closeMenu();
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function toggleMenu() {
+    document.getElementById('burger-btn').classList.toggle('open');
+    document.getElementById('mobile-menu').classList.toggle('open');
+  }
+
+  function closeMenu() {
+    document.getElementById('burger-btn').classList.remove('open');
+    document.getElementById('mobile-menu').classList.remove('open');
   }
 
   // Slideshow
