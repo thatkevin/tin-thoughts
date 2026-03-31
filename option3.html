@@ -426,6 +426,46 @@
     footer p { font-size: 0.72rem; color: #888; }
     .back-link { font-size: 0.72rem; color: #888; text-decoration: none; }
     .back-link:hover { color: #fff; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 700px) {
+      .topnav {
+        height: auto;
+        flex-wrap: wrap;
+        padding: 0.75rem 1rem;
+        gap: 0.5rem;
+      }
+      .nav-divider { display: none; }
+      .brand-pills {
+        order: 2;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        flex-wrap: nowrap;
+        scrollbar-width: none;
+        padding-bottom: 0.1rem;
+      }
+      .brand-pills::-webkit-scrollbar { display: none; }
+      .brand-pill { flex-shrink: 0; white-space: nowrap; min-height: 36px; display: flex; align-items: center; font-size: 0.65rem; padding: 0.35rem 0.7rem; }
+      .tin-mark-text { font-size: 0.85rem; }
+      .tin-mark-sub { font-size: 0.55rem; }
+      .nav-end { display: none; }
+      .tin-hero-left { padding: 2rem 1.25rem; }
+      .tin-next-events { padding: 0 1rem; }
+      .next-event { grid-template-columns: 70px 1fr auto; gap: 0.75rem; }
+      .ne-venue { display: none; }
+      .tin-grid-section { padding: 2rem 1rem; }
+      .delia-left { padding: 2rem 1.25rem; }
+      .dp-event { grid-template-columns: 1fr auto; gap: 0.5rem; }
+      .dp-date { grid-column: 1 / -1; }
+      .dp-venue { display: none; }
+      .boudica-content { padding: 2rem 1rem; }
+      .boudica-aside { text-align: left; }
+      .los-right { padding: 2rem 1.25rem; }
+      .los-gigs { padding: 2rem 1rem; }
+      .gig-row { grid-template-columns: 100px 1fr; gap: 0.75rem; }
+      .gr-venue { display: none; }
+    }
   </style>
 </head>
 <body>
@@ -435,19 +475,19 @@
   <a class="tin-mark" href="#">
     <div>
       <div class="tin-mark-text">The Tin</div>
+      <div class="tin-mark-sub">Music and Arts</div>
       <div class="tin-mark-bar">
         <span style="background:#d85b61"></span>
         <span style="background:#edc656"></span>
         <span style="background:#0b8793"></span>
       </div>
     </div>
-    <div class="tin-mark-sub">Music and Arts</div>
   </a>
   <div class="nav-divider"></div>
   <div class="brand-pills">
     <div class="brand-pill active" data-brand="tin" onclick="switchBrand('tin')">The Tin</div>
     <div class="brand-pill inactive" data-brand="delia" onclick="switchBrand('delia')">Deliaphonic</div>
-    <div class="brand-pill inactive" data-brand="boudica" onclick="switchBrand('boudica')">Boudica Festival</div>
+    <div class="brand-pill inactive" data-brand="boudica" onclick="switchBrand('boudica')">Boudica</div>
     <div class="brand-pill inactive" data-brand="los" onclick="switchBrand('los')">Live on Stage</div>
   </div>
   <div class="nav-end">

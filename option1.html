@@ -456,6 +456,41 @@
     footer p { font-size: 0.75rem; color: #888; }
     .back-link { font-size: 0.75rem; color: #888; text-decoration: none; }
     .back-link:hover { color: #fff; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 700px) {
+      .chrome { padding: 0.75rem 1rem 0; }
+      .chrome-row { flex-wrap: wrap; gap: 0; }
+      .brand-mark { width: 100%; padding-right: 0; padding-bottom: 0.75rem; }
+      .global-links { display: none; }
+      .tab-row {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        flex-wrap: nowrap;
+        width: 100%;
+        gap: 2px;
+        scrollbar-width: none;
+      }
+      .tab-row::-webkit-scrollbar { display: none; }
+      .tab { white-space: nowrap; padding: 0.6rem 1rem; font-size: 0.72rem; flex-shrink: 0; }
+      .tin-hero { height: 70vh; }
+      .tin-slide-info { left: 1rem; bottom: 1.5rem; right: 4rem; max-width: none; }
+      .event-title { font-size: 2rem; }
+      .slide-dots { right: 1rem; bottom: 1rem; }
+      .tin-about { padding: 2rem 1rem; }
+      .events-grid { padding: 1.5rem 1rem; }
+      .delia-hero { padding: 2rem 1rem; gap: 2rem; }
+      .event-row { flex-wrap: wrap; gap: 0.35rem; padding: 0.85rem 0; }
+      .event-row-date { min-width: auto; width: 100%; }
+      .event-row-venue { margin-left: 0; }
+      .boudica-hero-content { padding: 2rem 1rem; }
+      .boudica-title { font-size: 3.5rem; }
+      .boudica-lineup { padding: 2rem 1rem; }
+      .los-hero { padding: 2rem 1rem; }
+      .los-title { font-size: 3rem; }
+      .los-details { grid-template-columns: 1fr 1fr; }
+      .los-gallery { padding: 1.5rem 1rem; }
+    }
   </style>
 </head>
 <body>

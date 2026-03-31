@@ -469,6 +469,31 @@
     footer p { font-size: 0.75rem; color: #888; }
     .back-link { font-size: 0.75rem; color: #888; text-decoration: none; }
     .back-link:hover { color: #fff; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 700px) {
+      .masthead { padding-top: 0.75rem; }
+      .masthead-top { flex-direction: column; align-items: center; padding: 0 1rem 1rem; gap: 0.5rem; }
+      .utility-nav { display: none; }
+      .social-links { display: none; }
+      .masthead-center img { height: 110px !important; }
+      .brand-btn { font-size: 0.62rem; min-height: 44px; }
+      .tin-spread { min-height: auto; }
+      .spread-item { min-height: 240px; }
+      .tin-about-strip { grid-template-columns: 1fr; }
+      .about-label-col { border-right: none; border-bottom: 1px solid #111; padding: 1.5rem 1rem; }
+      .about-text-col { padding: 1.5rem 1rem; }
+      .events-strip { padding: 1.5rem 1rem; }
+      .delia-programme { padding: 2rem 1rem; }
+      .programme-event { grid-template-columns: 1fr auto; gap: 0.5rem; }
+      .prog-venue { display: none; }
+      .prog-date { grid-column: 1 / -1; }
+      .boudica-poster-left { padding: 2rem 1rem; }
+      .los-hero { padding: 2rem 1rem; gap: 2rem; }
+      .los-gigs { padding: 2rem 1rem; }
+      .gig-row { flex-wrap: wrap; gap: 0.25rem; }
+      .gig-venue { margin-left: 0; width: 100%; }
+    }
   </style>
 </head>
 <body>
